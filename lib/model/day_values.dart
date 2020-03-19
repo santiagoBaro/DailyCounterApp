@@ -1,25 +1,31 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'chart_value.dart';
+
 part 'day_values.g.dart';
 
 @JsonSerializable()
 class DayValues {
-  String day;
+  final String day;
   int waterIntake;
   int carbsIntake;
+  final List<ChartValue> waterIntakeLastWeek;
+  final List<ChartValue> carbsIntakeLastWeek;
 
   DayValues({
     this.day,
     this.waterIntake,
     this.carbsIntake,
+    this.carbsIntakeLastWeek,
+    this.waterIntakeLastWeek,
   });
 
-  int waterIntakePerc() {
-    return waterIntake * 100 ~/ 3500;
+  double waterIntakePerc() {
+    return waterIntake * 100 / 3500;
   }
 
-  int carbsIntakePerc() {
-    return carbsIntake * 100 ~/ 20;
+  double carbsIntakePerc() {
+    return carbsIntake * 100 / 20;
   }
 
   factory DayValues.fromJson(Map<String, dynamic> json) =>
