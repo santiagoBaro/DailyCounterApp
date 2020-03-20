@@ -37,7 +37,7 @@ class MyHomePage extends StatelessWidget {
         child: BlocBuilder<DailyCounterBloc, DailyCounterState>(
             builder: (BuildContext context, DailyCounterState state) {
           if (state is DailyCounterInitial) {
-            return buildInitialInput();
+            return buildInitialInput(context);
           } else if (state is DailyCounterLoading) {
             return buildLoading();
           } else if (state is DailyCounterLoaded) {

@@ -37,13 +37,15 @@ class DailyCounterBloc
       waterHistory.removeAt(0);
       carbsHistory.removeAt(0);
 
+      String simplypiedDate = event.oldValues.day.substring(3);
+      //event.oldValues.day = simplypiedDate;
       // ADDS THE MOST RECENT DATE VALUES
       waterHistory.add(ChartValue(
-        date: event.oldValues.day.toString(),
+        date: simplypiedDate,
         ammount: event.oldValues.waterIntake,
       ));
       carbsHistory.add(ChartValue(
-        date: event.oldValues.day.toString(),
+        date: simplypiedDate,
         ammount: event.oldValues.carbsIntake,
       ));
 
@@ -65,8 +67,8 @@ class DailyCounterBloc
       // AS THE VALUE CAN BE NEGATIVE, BUT THE IOTAL CANT, THERE IS A CHECK
       // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY
       var day = event.values;
-      day.waterIntake += event.ammount.toInt();
       if (day.waterIntake + event.ammount.toInt() >= 0) {
+        day.waterIntake += event.ammount.toInt();
         yield DailyCounterLoaded(day);
       } else {
         day.waterIntake = 0;
@@ -77,8 +79,8 @@ class DailyCounterBloc
       // AS THE VALUE CAN BE NEGATIVE, BUT THE IOTAL CANT, THERE IS A CHECK
       // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY
       var day = event.values;
-      day.carbsIntake += event.ammount.toInt();
       if (day.carbsIntake + event.ammount.toInt() >= 0) {
+        day.carbsIntake += event.ammount.toInt();
         yield DailyCounterLoaded(day);
       } else {
         day.carbsIntake = 0;

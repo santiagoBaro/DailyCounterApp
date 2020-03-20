@@ -7,7 +7,7 @@ part 'day_values.g.dart';
 
 @JsonSerializable()
 class DayValues {
-  final String day;
+  String day;
   int waterIntake;
   int carbsIntake;
   final List<ChartValue> waterIntakeLastWeek;

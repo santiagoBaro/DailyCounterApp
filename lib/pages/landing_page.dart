@@ -5,10 +5,90 @@ import 'package:dailycounter_hydrated_bloc/model/day_values.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_rounded_progress_bar/flutter_rounded_progress_bar.dart';
 import 'package:flutter_rounded_progress_bar/rounded_progress_bar_style.dart';
 
-Widget buildInitialInput() {}
+Widget buildInitialInput(BuildContext context) {
+  var formatter = new DateFormat('dd LLL');
+  var secondFormatter = new DateFormat('E dd LLL');
+  var newDate = DateTime.now();
+
+  // INITIALIZE CHART VALUES FOR THE LAST 7 DAYS
+  List<ChartValue> waterHistory = [
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -7))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -6))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -5))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -4))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -3))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -2))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -1))),
+      ammount: 0,
+    ),
+  ];
+  List<ChartValue> carbsHistory = [
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -7))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -6))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -5))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -4))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -3))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -2))),
+      ammount: 0,
+    ),
+    ChartValue(
+      date: formatter.format(newDate.add(Duration(days: -1))),
+      ammount: 0,
+    ),
+  ];
+
+  // INITIALIZES THE DAY VALUES TO THE CURRENT DAY
+  // WITH INTAKE VALUES IN 0
+
+  var day = DayValues(
+    day: secondFormatter.format(newDate).toString(),
+    waterIntake: 0,
+    carbsIntake: 0,
+    waterIntakeLastWeek: waterHistory,
+    carbsIntakeLastWeek: carbsHistory,
+  );
+
+  return buildColumnWithData(context, day);
+}
 
 Widget buildColumnWithData(BuildContext context, DayValues values) {
   return SingleChildScrollView(
@@ -255,6 +335,8 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
     ),
   );
 }
+
+// CHARTRS DATA FORMATS
 
 List<charts.Series<ChartValue, String>> _getWaterData(DayValues values) {
   return [
