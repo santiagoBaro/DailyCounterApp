@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'chart_value.dart';
@@ -13,11 +14,11 @@ class DayValues {
   final List<ChartValue> carbsIntakeLastWeek;
 
   DayValues({
-    this.day,
-    this.waterIntake,
-    this.carbsIntake,
-    this.carbsIntakeLastWeek,
-    this.waterIntakeLastWeek,
+    @required this.day,
+    @required this.waterIntake,
+    @required this.carbsIntake,
+    @required this.carbsIntakeLastWeek,
+    @required this.waterIntakeLastWeek,
   });
 
   double waterIntakePerc() {

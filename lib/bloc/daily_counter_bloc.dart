@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:dailycounter_hydrated_bloc/model/chart_value.dart';
 import 'package:intl/intl.dart';
 import 'package:dailycounter_hydrated_bloc/model/day_values.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -21,22 +22,68 @@ class DailyCounterBloc
     DailyCounterEvent event,
   ) async* {
     if (event is LoadNewDate) {
-      //TODO
+      // THIS EVENT SETS THE STATE OF THE APP TO THE CURRENT DATE
+      // INITIALIZEING THE INTAKE VALUES IN 0
+      // AND UPDATES THE USERS HISTORY
+
       yield DailyCounterLoading();
+
+      List<ChartValue> carbsHistory;
+      List<ChartValue> waterHistory;
+      waterHistory = event.oldValues.waterIntakeLastWeek;
+      carbsHistory = event.oldValues.carbsIntakeLastWeek;
+
+      // REMOVES OLDEST DATE VALUES
+      waterHistory.removeAt(0);
+      carbsHistory.removeAt(0);
+
+      // ADDS THE MOST RECENT DATE VALUES
+      waterHistory.add(ChartValue(
+        date: event.oldValues.day.toString(),
+        ammount: event.oldValues.waterIntake,
+      ));
+      carbsHistory.add(ChartValue(
+        date: event.oldValues.day.toString(),
+        ammount: event.oldValues.carbsIntake,
+      ));
+
+      // CREATES A NEW DAY INITIALIZEING THE INTAKE VALUES IN 0
+      // AND USING THE UPDATED HISTORY
       var formatter = new DateFormat('E dd LLL');
       var newDate = DateTime.now();
       var day = DayValues(
         day: formatter.format(newDate).toString(),
         waterIntake: 0,
         carbsIntake: 0,
+        waterIntakeLastWeek: waterHistory,
+        carbsIntakeLastWeek: carbsHistory,
       );
+
       yield DailyCounterLoaded(day);
-    } else if (event is UpdateValues) {
-      //TODO
     } else if (event is AddWater) {
-      //TODO
+      // THIS EVENT RECIVES THE OLD VALUES AND THE AMMOUNT OF WATER THE USER ADDED
+      // AS THE VALUE CAN BE NEGATIVE, BUT THE IOTAL CANT, THERE IS A CHECK
+      // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY
+      var day = event.values;
+      day.waterIntake += event.ammount.toInt();
+      if (day.waterIntake + event.ammount.toInt() >= 0) {
+        yield DailyCounterLoaded(day);
+      } else {
+        day.waterIntake = 0;
+        yield DailyCounterLoaded(day);
+      }
     } else if (event is AddCarbs) {
-      //TODO
+      // THIS EVENT RECIVES THE OLD VALUES AND THE AMMOUNT OF CARBS THE USER ADDED
+      // AS THE VALUE CAN BE NEGATIVE, BUT THE IOTAL CANT, THERE IS A CHECK
+      // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY
+      var day = event.values;
+      day.carbsIntake += event.ammount.toInt();
+      if (day.carbsIntake + event.ammount.toInt() >= 0) {
+        yield DailyCounterLoaded(day);
+      } else {
+        day.carbsIntake = 0;
+        yield DailyCounterLoaded(day);
+      }
     }
   }
 

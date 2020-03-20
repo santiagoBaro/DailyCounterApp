@@ -6,9 +6,9 @@ abstract class DailyCounterEvent {
 }
 
 class LoadNewDate extends DailyCounterEvent {
-  final DayValues values;
+  final DayValues oldValues;
 
-  LoadNewDate(this.values);
+  LoadNewDate(this.oldValues);
 }
 
 class UpdateValues extends DailyCounterEvent {
@@ -19,12 +19,20 @@ class UpdateValues extends DailyCounterEvent {
 
 class AddWater extends DailyCounterEvent {
   final int ammount;
+  final DayValues values;
 
-  AddWater(this.ammount);
+  AddWater(
+    this.ammount,
+    this.values,
+  );
 }
 
 class AddCarbs extends DailyCounterEvent {
   final int ammount;
+  final DayValues values;
 
-  AddCarbs(this.ammount);
+  AddCarbs(
+    this.ammount,
+    this.values,
+  );
 }
