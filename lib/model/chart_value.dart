@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 
 class ChartValue {
-  final String label;
-  final int value;
+  final String date;
+  final int ammount;
 
   ChartValue({
-    @required this.label,
-    @required this.value,
+    @required this.date,
+    @required this.ammount,
   });
 }

@@ -1,11 +1,16 @@
+import 'package:dailycounter_hydrated_bloc/bloc/daily_counter_bloc.dart';
+import 'package:dailycounter_hydrated_bloc/model/bar_chart.dart';
+import 'package:dailycounter_hydrated_bloc/model/chart_value.dart';
 import 'package:dailycounter_hydrated_bloc/model/day_values.dart';
 import 'package:flutter/material.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rounded_progress_bar/flutter_rounded_progress_bar.dart';
 import 'package:flutter_rounded_progress_bar/rounded_progress_bar_style.dart';
 
 Widget buildInitialInput() {}
 
-Widget buildColumnWithData(DayValues values) {
+Widget buildColumnWithData(BuildContext context, DayValues values) {
   return SingleChildScrollView(
     child: Center(
       child: Column(
@@ -54,30 +59,36 @@ Widget buildColumnWithData(DayValues values) {
                   "250 ml",
                 ),
                 onPressed: () {
-                  // setState(() {
-                  //   currentDay.addWater(250);
-                  //   db.update(currentDay);
-                  // });
+                  BlocProvider.of<DailyCounterBloc>(context).dispatch(
+                    AddWater(
+                      250,
+                      values,
+                    ),
+                  );
                 },
                 color: Colors.blue[300],
               ),
               FlatButton(
                 child: Text("600 ml"),
                 onPressed: () {
-                  // setState(() {
-                  //   currentDay.addWater(600);
-                  //   db.update(currentDay);
-                  // });
+                  BlocProvider.of<DailyCounterBloc>(context).dispatch(
+                    AddWater(
+                      600,
+                      values,
+                    ),
+                  );
                 },
                 color: Colors.blue[300],
               ),
               FlatButton(
                 child: Text("1 L"),
                 onPressed: () {
-                  // setState(() {
-                  //   currentDay.addWater(1000);
-                  //   db.update(currentDay);
-                  // });
+                  BlocProvider.of<DailyCounterBloc>(context).dispatch(
+                    AddWater(
+                      1000,
+                      values,
+                    ),
+                  );
                 },
                 color: Colors.blue[300],
               ),
@@ -89,30 +100,37 @@ Widget buildColumnWithData(DayValues values) {
               FlatButton(
                 child: Text("-250 ml"),
                 onPressed: () {
-                  // setState(() {
-                  //   currentDay.addWater(-250);
-                  //   db.update(currentDay);
-                  // });
+                  BlocProvider.of<DailyCounterBloc>(context).dispatch(
+                    AddWater(
+                      -250,
+                      values,
+                    ),
+                  );
                 },
                 color: Colors.black12,
               ),
               FlatButton(
                 child: Text("-600 ml"),
                 onPressed: () {
-                  // setState(() {
-                  //   currentDay.addWater(-600);
-                  //   db.update(currentDay);
-                  // });
+                  BlocProvider.of<DailyCounterBloc>(context).dispatch(
+                    AddWater(
+                      -600,
+                      values,
+                    ),
+                  );
                 },
                 color: Colors.black12,
               ),
               FlatButton(
                 child: Text("-1 L"),
                 onPressed: () {
-                  // setState(() {
-                  //   currentDay.addWater(-1000);
-                  //   db.update(currentDay);
-                  // });
+                  //
+                  BlocProvider.of<DailyCounterBloc>(context).dispatch(
+                    AddWater(
+                      -1000,
+                      values,
+                    ),
+                  );
                 },
                 color: Colors.black12,
               ),
@@ -162,10 +180,13 @@ Widget buildColumnWithData(DayValues values) {
                 child: IconButton(
                   icon: Icon(Icons.exposure_neg_1),
                   onPressed: () {
-                    // setState(() {
-                    //   currentDay.addCarbs(-1);
-                    //   db.update(currentDay);
-                    // });
+                    //var ammount = -1;
+                    BlocProvider.of<DailyCounterBloc>(context).dispatch(
+                      AddCarbs(
+                        -1,
+                        values,
+                      ),
+                    );
                   },
                 ),
               ),
@@ -177,10 +198,13 @@ Widget buildColumnWithData(DayValues values) {
                 child: IconButton(
                   icon: Icon(Icons.exposure_plus_1),
                   onPressed: () {
-                    // setState(() {
-                    //   currentDay.addCarbs(1);
-                    //   db.update(currentDay);
-                    // });
+                    //var ammount = 1;
+                    BlocProvider.of<DailyCounterBloc>(context).dispatch(
+                      AddCarbs(
+                        1,
+                        values,
+                      ),
+                    );
                   },
                 ),
               ),
@@ -196,10 +220,12 @@ Widget buildColumnWithData(DayValues values) {
               fontSize: 30,
             ),
           ),
-          // SizedBox(
-          //   child: SimpleBarChart(_getCarbsData()),
-          //   height: 300,
-          // ),
+          SizedBox(
+            child: SimpleBarChart(
+              _getCarbsData(values),
+            ),
+            height: 300,
+          ),
 
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -214,10 +240,12 @@ Widget buildColumnWithData(DayValues values) {
               fontSize: 30,
             ),
           ),
-          // SizedBox(
-          //   child: SimpleBarChart(_getWaterData()),
-          //   height: 300,
-          // ),
+          SizedBox(
+            child: SimpleBarChart(
+              _getWaterData(values),
+            ),
+            height: 300,
+          ),
           SizedBox(
             height: 40,
           ),
@@ -226,4 +254,28 @@ Widget buildColumnWithData(DayValues values) {
       ),
     ),
   );
+}
+
+List<charts.Series<ChartValue, String>> _getWaterData(DayValues values) {
+  return [
+    new charts.Series<ChartValue, String>(
+      id: 'Water',
+      colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+      domainFn: (ChartValue instance, _) => instance.date,
+      measureFn: (ChartValue instance, _) => instance.ammount,
+      data: values.waterIntakeLastWeek,
+    )
+  ];
+}
+
+List<charts.Series<ChartValue, String>> _getCarbsData(DayValues values) {
+  return [
+    new charts.Series<ChartValue, String>(
+      id: 'Carbs',
+      colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+      domainFn: (ChartValue instance, _) => instance.date,
+      measureFn: (ChartValue instance, _) => instance.ammount,
+      data: values.carbsIntakeLastWeek,
+    )
+  ];
 }

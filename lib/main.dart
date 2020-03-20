@@ -41,7 +41,7 @@ class MyHomePage extends StatelessWidget {
           } else if (state is DailyCounterLoading) {
             return buildLoading();
           } else if (state is DailyCounterLoaded) {
-            return buildColumnWithData(state.values);
+            return buildColumnWithData(context, state.values);
           }
         }),
       ),
