@@ -1,20 +1,20 @@
 part of 'daily_counter_bloc.dart';
 
 @immutable
-abstract class DailyCounterEvent {
+abstract class DailyCounterEvent extends Equatable {
   DailyCounterEvent([List props = const <dynamic>[]]);
 }
 
 class LoadNewDate extends DailyCounterEvent {
   final DayValues oldValues;
 
-  LoadNewDate(this.oldValues);
+  LoadNewDate(this.oldValues) : super([oldValues]);
 }
 
 class UpdateValues extends DailyCounterEvent {
   final DayValues values;
 
-  UpdateValues(this.values);
+  UpdateValues(this.values) : super([values]);
 }
 
 class AddWater extends DailyCounterEvent {
@@ -24,7 +24,10 @@ class AddWater extends DailyCounterEvent {
   AddWater(
     this.ammount,
     this.values,
-  );
+  ) : super([
+          ammount,
+          values,
+        ]);
 }
 
 class AddCarbs extends DailyCounterEvent {
@@ -34,5 +37,8 @@ class AddCarbs extends DailyCounterEvent {
   AddCarbs(
     this.ammount,
     this.values,
-  );
+  ) : super([
+          ammount,
+          values,
+        ]);
 }

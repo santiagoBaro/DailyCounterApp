@@ -1,7 +1,7 @@
 part of 'daily_counter_bloc.dart';
 
-@immutable
-abstract class DailyCounterState {
+//@immutable
+abstract class DailyCounterState extends Equatable {
   DailyCounterState([List props = const []]);
 }
 
@@ -12,5 +12,5 @@ class DailyCounterLoading extends DailyCounterState {}
 class DailyCounterLoaded extends DailyCounterState {
   final DayValues values;
 
-  DailyCounterLoaded(this.values);
+  DailyCounterLoaded(this.values) : super([values]);
 }

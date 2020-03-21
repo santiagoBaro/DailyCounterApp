@@ -49,12 +49,18 @@ class MyHomePage extends StatelessWidget {
   }
 
   Widget buildLoading() {
-    return Center(
-        child: Column(
+    return Column(
       children: <Widget>[
-        Text('Getting your information'),
+        Text(
+          'Getting your information',
+          style: TextStyle(fontSize: 40),
+        ),
+        SizedBox(
+          height: 20,
+        ),
         CircularProgressIndicator(),
       ],
-    ));
+      mainAxisAlignment: MainAxisAlignment.center,
+    );
   }
 }

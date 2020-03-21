@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dailycounter_hydrated_bloc/model/chart_value.dart';
+import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:dailycounter_hydrated_bloc/model/day_values.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -64,27 +65,52 @@ class DailyCounterBloc
       yield DailyCounterLoaded(day);
     } else if (event is AddWater) {
       // THIS EVENT RECIVES THE OLD VALUES AND THE AMMOUNT OF WATER THE USER ADDED
-      // AS THE VALUE CAN BE NEGATIVE, BUT THE IOTAL CANT, THERE IS A CHECK
-      // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY
-      var day = event.values;
-      if (day.waterIntake + event.ammount.toInt() >= 0) {
-        day.waterIntake += event.ammount.toInt();
-        yield DailyCounterLoaded(day);
+      // AS THE VALUE CAN BE NEGATIVE, BUT THE TOTAL CANT, THERE IS A CHECK
+      // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY IT ASIGNES 0
+      //yield DailyCounterLoading();
+      if (event.values.waterIntake + event.ammount.toInt() >= 0) {
+        DayValues day = DayValues(
+          day: event.values.day,
+          waterIntake: event.values.waterIntake + event.ammount.toInt(),
+          carbsIntake: event.values.carbsIntake,
+          carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
+          waterIntakeLastWeek: event.values.waterIntakeLastWeek,
+        );
+        yield new DailyCounterLoaded(day);
       } else {
-        day.waterIntake = 0;
-        yield DailyCounterLoaded(day);
+        DayValues day = DayValues(
+          day: event.values.day,
+          waterIntake: 0,
+          carbsIntake: event.values.carbsIntake,
+          carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
+          waterIntakeLastWeek: event.values.waterIntakeLastWeek,
+        );
+        yield new DailyCounterLoaded(day);
       }
     } else if (event is AddCarbs) {
       // THIS EVENT RECIVES THE OLD VALUES AND THE AMMOUNT OF CARBS THE USER ADDED
       // AS THE VALUE CAN BE NEGATIVE, BUT THE IOTAL CANT, THERE IS A CHECK
       // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY
-      var day = event.values;
-      if (day.carbsIntake + event.ammount.toInt() >= 0) {
-        day.carbsIntake += event.ammount.toInt();
-        yield DailyCounterLoaded(day);
+      //yield DailyCounterLoading();
+
+      if (event.values.carbsIntake + event.ammount.toInt() >= 0) {
+        DayValues day = DayValues(
+          day: event.values.day,
+          waterIntake: event.values.waterIntake,
+          carbsIntake: event.values.carbsIntake + event.ammount.toInt(),
+          carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
+          waterIntakeLastWeek: event.values.waterIntakeLastWeek,
+        );
+        yield new DailyCounterLoaded(day);
       } else {
-        day.carbsIntake = 0;
-        yield DailyCounterLoaded(day);
+        DayValues day = DayValues(
+          day: event.values.day,
+          waterIntake: event.values.waterIntake,
+          carbsIntake: event.values.carbsIntake + event.ammount.toInt(),
+          carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
+          waterIntakeLastWeek: event.values.waterIntakeLastWeek,
+        );
+        yield new DailyCounterLoaded(day);
       }
     }
   }

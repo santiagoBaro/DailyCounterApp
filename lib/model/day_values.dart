@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -6,10 +7,10 @@ import 'chart_value.dart';
 part 'day_values.g.dart';
 
 @JsonSerializable()
-class DayValues {
-  String day;
-  int waterIntake;
-  int carbsIntake;
+class DayValues extends Equatable {
+  final String day;
+  final int waterIntake;
+  final int carbsIntake;
   final List<ChartValue> waterIntakeLastWeek;
   final List<ChartValue> carbsIntakeLastWeek;
 

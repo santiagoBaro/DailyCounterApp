@@ -107,7 +107,7 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
             height: 20,
           ),
           Text(
-            'Consumo de agua',
+            'Water Intake',
             style: TextStyle(
               fontSize: 30,
             ),
@@ -116,7 +116,7 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
             height: 10,
           ),
           Text(
-            'objetivo: 3,5 L',
+            'Objective: 3,5 L',
             style: TextStyle(
               fontSize: 18,
             ),
@@ -231,7 +231,7 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
             height: 20,
           ),
           Text(
-            'Carbohidratos',
+            'Carbohidrates',
             style: TextStyle(
               fontSize: 30,
             ),
@@ -260,7 +260,6 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
                 child: IconButton(
                   icon: Icon(Icons.exposure_neg_1),
                   onPressed: () {
-                    //var ammount = -1;
                     BlocProvider.of<DailyCounterBloc>(context).dispatch(
                       AddCarbs(
                         -1,
@@ -278,7 +277,6 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
                 child: IconButton(
                   icon: Icon(Icons.exposure_plus_1),
                   onPressed: () {
-                    //var ammount = 1;
                     BlocProvider.of<DailyCounterBloc>(context).dispatch(
                       AddCarbs(
                         1,
@@ -295,7 +293,7 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
             height: 40,
           ),
           Text(
-            'Historial Carbohidratos - gr',
+            'Carbohidrates History - gr',
             style: TextStyle(
               fontSize: 30,
             ),
@@ -315,7 +313,7 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
             ),
           ),
           Text(
-            'Historial Agua - ml',
+            'Water History - ml',
             style: TextStyle(
               fontSize: 30,
             ),
