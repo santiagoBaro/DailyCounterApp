@@ -22,7 +22,87 @@ class DailyCounterBloc
   Stream<DailyCounterState> mapEventToState(
     DailyCounterEvent event,
   ) async* {
-    if (event is LoadNewDate) {
+    if (event is InitializeValues) {
+      yield DailyCounterLoading();
+      var simplyfiedFormatter = new DateFormat('dd LLL');
+      var secondFormatter = new DateFormat('E dd LLL');
+      var newDate = DateTime.now();
+
+      // INITIALIZE CHART VALUES FOR THE LAST 7 DAYS
+      List<ChartValue> waterHistory = [
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -8))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -7))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -6))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -5))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -4))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -3))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -2))),
+          ammount: 0,
+        ),
+      ];
+      List<ChartValue> carbsHistory = [
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -7))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -6))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -5))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -4))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -3))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -2))),
+          ammount: 0,
+        ),
+        ChartValue(
+          date: simplyfiedFormatter.format(newDate.add(Duration(days: -1))),
+          ammount: 0,
+        ),
+      ];
+
+      // INITIALIZES THE DAY VALUES TO THE CURRENT DAY
+      // WITH INTAKE VALUES IN 0
+
+      final DayValues day = DayValues(
+        day: secondFormatter.format(newDate.add(Duration(days: -1))).toString(),
+        waterIntake: 0,
+        carbsIntake: 0,
+        waterIntakeLastWeek: waterHistory,
+        carbsIntakeLastWeek: carbsHistory,
+      );
+
+      yield DailyCounterLoaded(values: day);
+    } else if (event is LoadNewDate) {
       // THIS EVENT SETS THE STATE OF THE APP TO THE CURRENT DATE
       // INITIALIZEING THE INTAKE VALUES IN 0
       // AND UPDATES THE USERS HISTORY
@@ -39,7 +119,6 @@ class DailyCounterBloc
       carbsHistory.removeAt(0);
 
       String simplypiedDate = event.oldValues.day.substring(3);
-      //event.oldValues.day = simplypiedDate;
       // ADDS THE MOST RECENT DATE VALUES
       waterHistory.add(ChartValue(
         date: simplypiedDate,
@@ -54,7 +133,7 @@ class DailyCounterBloc
       // AND USING THE UPDATED HISTORY
       var formatter = new DateFormat('E dd LLL');
       var newDate = DateTime.now();
-      var day = DayValues(
+      final DayValues day = DayValues(
         day: formatter.format(newDate).toString(),
         waterIntake: 0,
         carbsIntake: 0,
@@ -62,55 +141,55 @@ class DailyCounterBloc
         carbsIntakeLastWeek: carbsHistory,
       );
 
-      yield DailyCounterLoaded(day);
+      yield DailyCounterLoaded(values: day);
     } else if (event is AddWater) {
       // THIS EVENT RECIVES THE OLD VALUES AND THE AMMOUNT OF WATER THE USER ADDED
       // AS THE VALUE CAN BE NEGATIVE, BUT THE TOTAL CANT, THERE IS A CHECK
       // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY IT ASIGNES 0
-      //yield DailyCounterLoading();
+      yield DailyCounterLoading();
       if (event.values.waterIntake + event.ammount.toInt() >= 0) {
-        DayValues day = DayValues(
+        final DayValues day = DayValues(
           day: event.values.day,
           waterIntake: event.values.waterIntake + event.ammount.toInt(),
           carbsIntake: event.values.carbsIntake,
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(day);
+        yield new DailyCounterLoaded(values: day);
       } else {
-        DayValues day = DayValues(
+        final DayValues day = DayValues(
           day: event.values.day,
           waterIntake: 0,
           carbsIntake: event.values.carbsIntake,
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(day);
+        yield new DailyCounterLoaded(values: day);
       }
     } else if (event is AddCarbs) {
       // THIS EVENT RECIVES THE OLD VALUES AND THE AMMOUNT OF CARBS THE USER ADDED
       // AS THE VALUE CAN BE NEGATIVE, BUT THE IOTAL CANT, THERE IS A CHECK
       // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY
-      //yield DailyCounterLoading();
+      yield DailyCounterLoading();
 
       if (event.values.carbsIntake + event.ammount.toInt() >= 0) {
-        DayValues day = DayValues(
+        final DayValues day = DayValues(
           day: event.values.day,
           waterIntake: event.values.waterIntake,
           carbsIntake: event.values.carbsIntake + event.ammount.toInt(),
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(day);
+        yield new DailyCounterLoaded(values: day);
       } else {
-        DayValues day = DayValues(
+        final DayValues day = DayValues(
           day: event.values.day,
           waterIntake: event.values.waterIntake,
           carbsIntake: event.values.carbsIntake + event.ammount.toInt(),
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(day);
+        yield new DailyCounterLoaded(values: day);
       }
     }
   }
@@ -118,8 +197,8 @@ class DailyCounterBloc
   @override
   DailyCounterState fromJson(Map<String, dynamic> json) {
     try {
-      final weather = DayValues.fromJson(json);
-      return DailyCounterLoaded(weather);
+      final day = DayValues.fromJson(json);
+      return DailyCounterLoaded(values: day);
     } catch (_) {
       return null;
     }

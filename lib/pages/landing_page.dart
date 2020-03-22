@@ -10,68 +10,71 @@ import 'package:flutter_rounded_progress_bar/flutter_rounded_progress_bar.dart';
 import 'package:flutter_rounded_progress_bar/rounded_progress_bar_style.dart';
 
 Widget buildInitialInput(BuildContext context) {
-  var formatter = new DateFormat('dd LLL');
+  // ON FIRST INITIALIZACTION IT CALLS THIS METHOD
+  // IT INITIALIZED THE DATA AND CALLS THE METHOD FOR
+  // THE LOADED STATE
+  var simplyfiedFormatter = new DateFormat('dd LLL');
   var secondFormatter = new DateFormat('E dd LLL');
   var newDate = DateTime.now();
 
   // INITIALIZE CHART VALUES FOR THE LAST 7 DAYS
   List<ChartValue> waterHistory = [
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -7))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -8))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -6))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -7))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -5))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -6))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -4))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -5))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -3))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -4))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -2))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -3))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -1))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -2))),
       ammount: 0,
     ),
   ];
   List<ChartValue> carbsHistory = [
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -7))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -7))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -6))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -6))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -5))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -5))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -4))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -4))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -3))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -3))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -2))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -2))),
       ammount: 0,
     ),
     ChartValue(
-      date: formatter.format(newDate.add(Duration(days: -1))),
+      date: simplyfiedFormatter.format(newDate.add(Duration(days: -1))),
       ammount: 0,
     ),
   ];
@@ -80,17 +83,22 @@ Widget buildInitialInput(BuildContext context) {
   // WITH INTAKE VALUES IN 0
 
   var day = DayValues(
-    day: secondFormatter.format(newDate).toString(),
+    day: secondFormatter.format(newDate.add(Duration(days: -1))).toString(),
     waterIntake: 0,
     carbsIntake: 0,
     waterIntakeLastWeek: waterHistory,
     carbsIntakeLastWeek: carbsHistory,
   );
 
-  return buildColumnWithData(context, day);
+  BlocProvider.of<DailyCounterBloc>(context).dispatch(LoadNewDate(day));
+  return Container();
+  // CALLS THE LOADED STATE METHOD
 }
 
 Widget buildColumnWithData(BuildContext context, DayValues values) {
+  // THIS METHOD IS CALLED ON THE lOADED STATE
+  //
+
   return SingleChildScrollView(
     child: Center(
       child: Column(
@@ -132,6 +140,7 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
             theme: RoundedProgressBarTheme.blue,
             percent: values.waterIntakePerc(),
           ),
+          // WATER INTAKE POSITIVE VALUES
           Row(
             children: <Widget>[
               FlatButton(
@@ -175,6 +184,7 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
             ],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           ),
+          // WATER INTAKE NEGATIVE VALUES
           Row(
             children: <Widget>[
               FlatButton(
@@ -250,6 +260,7 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
           SizedBox(
             height: 20,
           ),
+          // CARBS INTAKE BUTTONS
           Row(
             children: <Widget>[
               Ink(

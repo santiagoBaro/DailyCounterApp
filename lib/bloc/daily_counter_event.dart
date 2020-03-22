@@ -2,7 +2,7 @@ part of 'daily_counter_bloc.dart';
 
 @immutable
 abstract class DailyCounterEvent extends Equatable {
-  DailyCounterEvent([List props = const <dynamic>[]]);
+  DailyCounterEvent([List props = const <dynamic>[]]) : super(props);
 }
 
 class LoadNewDate extends DailyCounterEvent {
@@ -11,11 +11,7 @@ class LoadNewDate extends DailyCounterEvent {
   LoadNewDate(this.oldValues) : super([oldValues]);
 }
 
-class UpdateValues extends DailyCounterEvent {
-  final DayValues values;
-
-  UpdateValues(this.values) : super([values]);
-}
+class InitializeValues extends DailyCounterEvent {}
 
 class AddWater extends DailyCounterEvent {
   final int ammount;
