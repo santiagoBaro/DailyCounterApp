@@ -1,99 +1,13 @@
-import 'package:dailycounter_hydrated_bloc/bloc/daily_counter_bloc.dart';
 import 'package:dailycounter_hydrated_bloc/model/bar_chart.dart';
 import 'package:dailycounter_hydrated_bloc/model/chart_value.dart';
 import 'package:dailycounter_hydrated_bloc/model/day_values.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_rounded_progress_bar/flutter_rounded_progress_bar.dart';
 import 'package:flutter_rounded_progress_bar/rounded_progress_bar_style.dart';
 
-Widget buildInitialInput(BuildContext context) {
-  // ON FIRST INITIALIZACTION IT CALLS THIS METHOD
-  // IT INITIALIZED THE DATA AND CALLS THE METHOD FOR
-  // THE LOADED STATE
-  var simplyfiedFormatter = new DateFormat('dd LLL');
-  var secondFormatter = new DateFormat('E dd LLL');
-  var newDate = DateTime.now();
-
-  // INITIALIZE CHART VALUES FOR THE LAST 7 DAYS
-  List<ChartValue> waterHistory = [
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -8))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -7))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -6))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -5))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -4))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -3))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -2))),
-      ammount: 0,
-    ),
-  ];
-  List<ChartValue> carbsHistory = [
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -7))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -6))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -5))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -4))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -3))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -2))),
-      ammount: 0,
-    ),
-    ChartValue(
-      date: simplyfiedFormatter.format(newDate.add(Duration(days: -1))),
-      ammount: 0,
-    ),
-  ];
-
-  // INITIALIZES THE DAY VALUES TO THE CURRENT DAY
-  // WITH INTAKE VALUES IN 0
-
-  var day = DayValues(
-    day: secondFormatter.format(newDate.add(Duration(days: -1))).toString(),
-    waterIntake: 0,
-    carbsIntake: 0,
-    waterIntakeLastWeek: waterHistory,
-    carbsIntakeLastWeek: carbsHistory,
-  );
-
-  BlocProvider.of<DailyCounterBloc>(context).dispatch(LoadNewDate(day));
-  return Container();
-  // CALLS THE LOADED STATE METHOD
-}
+import '../bloc/bloc.dart';
 
 Widget buildColumnWithData(BuildContext context, DayValues values) {
   // THIS METHOD IS CALLED ON THE lOADED STATE

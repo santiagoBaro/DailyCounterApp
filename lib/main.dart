@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'bloc/bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,18 +35,20 @@ class MyHomePage extends StatelessWidget {
       ),
       body: BlocProvider(
         builder: (context) => DailyCounterBloc(),
-        child: BlocBuilder<DailyCounterBloc, DailyCounterState>(
-          builder: (BuildContext context, DailyCounterState state) {
-            if (state is DailyCounterInitial) {
-              return initialLandingPage(context);
-            } else if (state is DailyCounterLoading) {
-              return buildLoading();
-            } else if (state is DailyCounterLoaded) {
-              return buildColumnWithData(context, state.values);
-            } else {
-              return buildErrorScreen('No State Detectrerd');
-            }
-          },
+        child: Container(
+          child: BlocBuilder<DailyCounterBloc, DailyCounterState>(
+            builder: (BuildContext context, DailyCounterState state) {
+              if (state is DailyCounterInitial) {
+                return initialLandingPage(context);
+              } else if (state is DailyCounterLoading) {
+                return buildLoading();
+              } else if (state is DailyCounterLoaded) {
+                return buildColumnWithData(context, state.values);
+              } else {
+                return buildErrorScreen('No State Detectrerd');
+              }
+            },
+          ),
         ),
       ),
     );

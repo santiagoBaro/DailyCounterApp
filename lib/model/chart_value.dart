@@ -1,7 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-@immutable
+part 'chart_value.g.dart';
+
+@JsonSerializable()
 class ChartValue extends Equatable {
   final String date;
   final int ammount;
@@ -10,4 +13,8 @@ class ChartValue extends Equatable {
     @required this.date,
     @required this.ammount,
   }) : super([date, ammount]);
+
+  factory ChartValue.fromJson(Map<String, dynamic> json) =>
+      _$ChartValueFromJson(json);
+  Map<String, dynamic> toJson() => _$ChartValueToJson(this);
 }

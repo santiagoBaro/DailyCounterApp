@@ -1,15 +1,10 @@
 import 'dart:async';
 import 'package:dailycounter_hydrated_bloc/model/chart_value.dart';
-import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:dailycounter_hydrated_bloc/model/day_values.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:flutter/material.dart';
 import '../model/day_values.dart';
-
-part 'daily_counter_event.dart';
-part 'daily_counter_state.dart';
+import 'bloc.dart';
 
 class DailyCounterBloc
     extends HydratedBloc<DailyCounterEvent, DailyCounterState> {
@@ -19,10 +14,30 @@ class DailyCounterBloc
   }
 
   @override
+  DailyCounterState fromJson(Map<String, dynamic> json) {
+    try {
+      final day = DayValues.fromJson(json);
+      return DailyCounterLoaded(day);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson(DailyCounterState state) {
+    if (state is DailyCounterLoaded) {
+      return state.values.toJson();
+    } else {
+      return null;
+    }
+  }
+
+  @override
   Stream<DailyCounterState> mapEventToState(
     DailyCounterEvent event,
   ) async* {
     if (event is InitializeValues) {
+      //! InitializeValues
       yield DailyCounterLoading();
       var simplyfiedFormatter = new DateFormat('dd LLL');
       var secondFormatter = new DateFormat('E dd LLL');
@@ -94,15 +109,16 @@ class DailyCounterBloc
       // WITH INTAKE VALUES IN 0
 
       final DayValues day = DayValues(
-        day: secondFormatter.format(newDate.add(Duration(days: -1))).toString(),
+        day: secondFormatter.format(newDate).toString(),
         waterIntake: 0,
         carbsIntake: 0,
         waterIntakeLastWeek: waterHistory,
         carbsIntakeLastWeek: carbsHistory,
       );
 
-      yield DailyCounterLoaded(values: day);
+      yield DailyCounterLoaded(day);
     } else if (event is LoadNewDate) {
+      //! LoadNewDate
       // THIS EVENT SETS THE STATE OF THE APP TO THE CURRENT DATE
       // INITIALIZEING THE INTAKE VALUES IN 0
       // AND UPDATES THE USERS HISTORY
@@ -140,9 +156,9 @@ class DailyCounterBloc
         waterIntakeLastWeek: waterHistory,
         carbsIntakeLastWeek: carbsHistory,
       );
-
-      yield DailyCounterLoaded(values: day);
+      yield DailyCounterLoaded(day);
     } else if (event is AddWater) {
+      //! AddWater
       // THIS EVENT RECIVES THE OLD VALUES AND THE AMMOUNT OF WATER THE USER ADDED
       // AS THE VALUE CAN BE NEGATIVE, BUT THE TOTAL CANT, THERE IS A CHECK
       // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY IT ASIGNES 0
@@ -155,8 +171,9 @@ class DailyCounterBloc
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(values: day);
+        yield new DailyCounterLoaded(day);
       } else {
+        // SET DAY VALUES WITH 0 WATER
         final DayValues day = DayValues(
           day: event.values.day,
           waterIntake: 0,
@@ -164,9 +181,10 @@ class DailyCounterBloc
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(values: day);
+        yield new DailyCounterLoaded(day);
       }
     } else if (event is AddCarbs) {
+      //! AddCarbs
       // THIS EVENT RECIVES THE OLD VALUES AND THE AMMOUNT OF CARBS THE USER ADDED
       // AS THE VALUE CAN BE NEGATIVE, BUT THE IOTAL CANT, THERE IS A CHECK
       // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY
@@ -180,8 +198,9 @@ class DailyCounterBloc
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(values: day);
+        yield new DailyCounterLoaded(day);
       } else {
+        // SET DAY VALUES WITH 0 CARBS
         final DayValues day = DayValues(
           day: event.values.day,
           waterIntake: event.values.waterIntake,
@@ -189,27 +208,8 @@ class DailyCounterBloc
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(values: day);
+        yield new DailyCounterLoaded(day);
       }
-    }
-  }
-
-  @override
-  DailyCounterState fromJson(Map<String, dynamic> json) {
-    try {
-      final day = DayValues.fromJson(json);
-      return DailyCounterLoaded(values: day);
-    } catch (_) {
-      return null;
-    }
-  }
-
-  @override
-  Map<String, dynamic> toJson(DailyCounterState state) {
-    if (state is DailyCounterLoaded) {
-      return state.values.toJson();
-    } else {
-      return null;
     }
   }
 }

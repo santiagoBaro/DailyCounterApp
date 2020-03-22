@@ -1,4 +1,7 @@
-part of 'daily_counter_bloc.dart';
+//part of 'daily_counter_bloc.dart';
+import 'package:dailycounter_hydrated_bloc/model/day_values.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 @immutable
 abstract class DailyCounterEvent extends Equatable {

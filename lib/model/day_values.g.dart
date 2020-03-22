@@ -11,8 +11,14 @@ DayValues _$DayValuesFromJson(Map<String, dynamic> json) {
     day: json['day'] as String,
     waterIntake: json['waterIntake'] as int,
     carbsIntake: json['carbsIntake'] as int,
-    waterIntakeLastWeek: json['waterIntakeLastWeek'] as List<ChartValue>,
-    carbsIntakeLastWeek: json['carbsIntakeLastWeek'] as List<ChartValue>,
+    carbsIntakeLastWeek: (json['carbsIntakeLastWeek'] as List)
+        ?.map((e) =>
+            e == null ? null : ChartValue.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    waterIntakeLastWeek: (json['waterIntakeLastWeek'] as List)
+        ?.map((e) =>
+            e == null ? null : ChartValue.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
   );
 }
 
