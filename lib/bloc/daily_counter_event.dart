@@ -14,7 +14,11 @@ class LoadNewDate extends DailyCounterEvent {
   LoadNewDate(this.oldValues) : super([oldValues]);
 }
 
-class InitializeValues extends DailyCounterEvent {}
+class InitializeValues extends DailyCounterEvent {
+  final int dailyWaterTarget;
+
+  InitializeValues(this.dailyWaterTarget) : super([dailyWaterTarget]);
+}
 
 class AddWater extends DailyCounterEvent {
   final int ammount;

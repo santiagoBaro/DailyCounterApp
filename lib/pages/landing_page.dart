@@ -21,9 +21,17 @@ Widget buildColumnWithData(BuildContext context, DayValues values) {
           SizedBox(
             height: 20,
           ),
-          Text(
-            "${values.day}",
-            style: TextStyle(fontSize: 25),
+          Container(
+            child: Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                "${values.day}",
+                style: TextStyle(fontSize: 25),
+              ),
+            ),
+            decoration: new BoxDecoration(
+                color: Colors.green,
+                borderRadius: new BorderRadius.all(Radius.circular(40.0))),
           ),
           SizedBox(
             height: 20,

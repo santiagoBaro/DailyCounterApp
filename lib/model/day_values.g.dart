@@ -8,6 +8,7 @@ part of 'day_values.dart';
 
 DayValues _$DayValuesFromJson(Map<String, dynamic> json) {
   return DayValues(
+    dailyWaterTarget: json['dailyWaterTarget'] as int,
     day: json['day'] as String,
     waterIntake: json['waterIntake'] as int,
     carbsIntake: json['carbsIntake'] as int,
@@ -23,6 +24,7 @@ DayValues _$DayValuesFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$DayValuesToJson(DayValues instance) => <String, dynamic>{
+      'dailyWaterTarget': instance.dailyWaterTarget,
       'day': instance.day,
       'waterIntake': instance.waterIntake,
       'carbsIntake': instance.carbsIntake,

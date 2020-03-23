@@ -40,7 +40,7 @@ class DailyCounterBloc
       //! InitializeValues
       yield DailyCounterLoading();
       var simplyfiedFormatter = new DateFormat('dd LLL');
-      var secondFormatter = new DateFormat('E dd LLL');
+      var formatter = new DateFormat('E dd LLL');
       var newDate = DateTime.now();
 
       // INITIALIZE CHART VALUES FOR THE LAST 7 DAYS
@@ -109,7 +109,8 @@ class DailyCounterBloc
       // WITH INTAKE VALUES IN 0
 
       final DayValues day = DayValues(
-        day: secondFormatter.format(newDate).toString(),
+        dailyWaterTarget: event.dailyWaterTarget,
+        day: formatter.format(newDate).toString(),
         waterIntake: 0,
         carbsIntake: 0,
         waterIntakeLastWeek: waterHistory,
@@ -150,6 +151,7 @@ class DailyCounterBloc
       var formatter = new DateFormat('E dd LLL');
       var newDate = DateTime.now();
       final DayValues day = DayValues(
+        dailyWaterTarget: event.oldValues.dailyWaterTarget,
         day: formatter.format(newDate).toString(),
         waterIntake: 0,
         carbsIntake: 0,
@@ -165,6 +167,7 @@ class DailyCounterBloc
       yield DailyCounterLoading();
       if (event.values.waterIntake + event.ammount.toInt() >= 0) {
         final DayValues day = DayValues(
+          dailyWaterTarget: event.values.dailyWaterTarget,
           day: event.values.day,
           waterIntake: event.values.waterIntake + event.ammount.toInt(),
           carbsIntake: event.values.carbsIntake,
@@ -175,6 +178,7 @@ class DailyCounterBloc
       } else {
         // SET DAY VALUES WITH 0 WATER
         final DayValues day = DayValues(
+          dailyWaterTarget: event.values.dailyWaterTarget,
           day: event.values.day,
           waterIntake: 0,
           carbsIntake: event.values.carbsIntake,
@@ -192,6 +196,7 @@ class DailyCounterBloc
 
       if (event.values.carbsIntake + event.ammount.toInt() >= 0) {
         final DayValues day = DayValues(
+          dailyWaterTarget: event.values.dailyWaterTarget,
           day: event.values.day,
           waterIntake: event.values.waterIntake,
           carbsIntake: event.values.carbsIntake + event.ammount.toInt(),
@@ -202,6 +207,7 @@ class DailyCounterBloc
       } else {
         // SET DAY VALUES WITH 0 CARBS
         final DayValues day = DayValues(
+          dailyWaterTarget: event.values.dailyWaterTarget,
           day: event.values.day,
           waterIntake: event.values.waterIntake,
           carbsIntake: event.values.carbsIntake + event.ammount.toInt(),

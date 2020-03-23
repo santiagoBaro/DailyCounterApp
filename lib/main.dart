@@ -2,6 +2,7 @@ import 'package:dailycounter_hydrated_bloc/bloc/daily_counter_bloc.dart';
 import 'package:dailycounter_hydrated_bloc/pages/initial_landing_page.dart';
 import 'package:dailycounter_hydrated_bloc/pages/landing_page.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -43,7 +44,14 @@ class MyHomePage extends StatelessWidget {
               } else if (state is DailyCounterLoading) {
                 return buildLoading();
               } else if (state is DailyCounterLoaded) {
-                return buildColumnWithData(context, state.values);
+                var formatter = new DateFormat('E dd LLL');
+                if (state.values.day !=
+                    formatter.format(DateTime.now()).toString()) {
+                  BlocProvider.of<DailyCounterBloc>(context)
+                      .dispatch(LoadNewDate(state.values));
+                } else {
+                  return buildColumnWithData(context, state.values);
+                }
               } else {
                 return buildErrorScreen('No State Detectrerd');
               }

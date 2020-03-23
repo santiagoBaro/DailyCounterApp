@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/bloc.dart';
@@ -20,7 +21,7 @@ class _InitialLandingPageState extends State<InitialLandingPage> {
         children: <Widget>[
           Center(
             child: Text(
-              'stay on top\n of your\n daily habbits',
+              'stay on top\nof your\ndaily habbits',
               style: TextStyle(fontSize: 30),
               textAlign: TextAlign.center,
             ),
@@ -29,24 +30,46 @@ class _InitialLandingPageState extends State<InitialLandingPage> {
             height: 20,
           ),
           Center(
-            child: FlatButton(
-              onPressed: () {
-                BlocProvider.of<DailyCounterBloc>(context)
-                    .dispatch(InitializeValues());
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  'Start Tracking',
-                  style: TextStyle(fontSize: 25),
-                ),
+            child: TextField(
+              onSubmitted: submitWaterIntake,
+              textInputAction: TextInputAction.search,
+              decoration: InputDecoration(
+                hintText: "Enter your daily water target",
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                suffixIcon: Icon(Icons.search),
               ),
-              color: Colors.blueGrey,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                WhitelistingTextInputFormatter.digitsOnly
+              ],
             ),
+            // FlatButton(
+            //   onPressed: () {
+            //     BlocProvider.of<DailyCounterBloc>(context)
+            //         .dispatch(InitializeValues());
+            //   },
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(10.0),
+            //     child: Text(
+            //       'Start Tracking',
+            //       style: TextStyle(fontSize: 25),
+            //     ),
+            //   ),
+            //   color: Colors.blueGrey,
+            // ),
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
     );
+  }
+
+  void submitWaterIntake(String dailyWaterTarget) {
+    // Get the Bloc using the BlocProvider
+
+    final weatherBloc = BlocProvider.of<DailyCounterBloc>(context);
+    // Initiate getting the weather
+    weatherBloc.dispatch(InitializeValues(int.parse(dailyWaterTarget)));
   }
 }

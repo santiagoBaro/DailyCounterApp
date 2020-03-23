@@ -8,6 +8,7 @@ part 'day_values.g.dart';
 
 @JsonSerializable()
 class DayValues extends Equatable {
+  final int dailyWaterTarget;
   final String day;
   final int waterIntake;
   final int carbsIntake;
@@ -15,6 +16,7 @@ class DayValues extends Equatable {
   final List<ChartValue> carbsIntakeLastWeek;
 
   DayValues({
+    @required this.dailyWaterTarget,
     @required this.day,
     @required this.waterIntake,
     @required this.carbsIntake,
@@ -23,7 +25,7 @@ class DayValues extends Equatable {
   });
 
   double waterIntakePerc() {
-    return waterIntake * 100 / 3500;
+    return waterIntake * 100 / dailyWaterTarget;
   }
 
   double carbsIntakePerc() {
