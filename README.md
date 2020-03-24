@@ -5,27 +5,27 @@ This app helps you keep track of your water and carbs intake, to keep you motiva
 
 ### Events
 -	InitializeValues
-  	Gets called on the first app launch, is in charge of initializing values.
+  	-Gets called on the first app launch, is in charge of initializing values.
   
 -	LoadNewDate
-  	Whenever the app launches and the date does not match the current one, this event gets called. It adds the old intake values to the     user’s history and updates to current date, initializing values in 0.
+  	-Whenever the app launches and the date does not match the current one, this event gets called. It adds the old intake values to the     user’s history and updates to current date, initializing values in 0.
     
 -	AddWater
-  o	Receives the old day values and the amount of water the user added.
+  	-Receives the old day values and the amount of water the user added.
   
 -	AddCarbs
-    Receives the old day values and the amount of carbs the user added.
+    -Receives the old day values and the amount of carbs the user added.
   
   
 ### States
 -	InitialState 
-  	This state is active on the first time the app is launched. 
+  	-This state is active on the first time the app is launched. 
 
 -	LoadingState
-  	Whenever the app is getting data from the local database
+  	-Whenever the app is getting data from the local database
 
 -	LoadedState
-    The only state that contains data, it is used to state the app is ready to show the UI
+    -The only state that contains data, it is used to state the app is ready to show the UI
   
   
 ### Packages Used
