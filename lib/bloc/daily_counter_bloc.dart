@@ -10,14 +10,14 @@ class DailyCounterBloc
     extends HydratedBloc<DailyCounterEvent, DailyCounterState> {
   @override
   DailyCounterState get initialState {
-    return super.initialState ?? DailyCounterInitial();
+    return super.initialState ?? InitialState();
   }
 
   @override
   DailyCounterState fromJson(Map<String, dynamic> json) {
     try {
       final day = DayValues.fromJson(json);
-      return DailyCounterLoaded(day);
+      return LoadedState(day);
     } catch (_) {
       return null;
     }
@@ -25,7 +25,7 @@ class DailyCounterBloc
 
   @override
   Map<String, dynamic> toJson(DailyCounterState state) {
-    if (state is DailyCounterLoaded) {
+    if (state is LoadedState) {
       return state.values.toJson();
     } else {
       return null;
@@ -38,7 +38,7 @@ class DailyCounterBloc
   ) async* {
     if (event is InitializeValues) {
       //! InitializeValues
-      yield DailyCounterLoading();
+      yield LoadingState();
       var simplyfiedFormatter = new DateFormat('dd LLL');
       var formatter = new DateFormat('E dd LLL');
       var newDate = DateTime.now();
@@ -117,14 +117,14 @@ class DailyCounterBloc
         carbsIntakeLastWeek: carbsHistory,
       );
 
-      yield DailyCounterLoaded(day);
+      yield LoadedState(day);
     } else if (event is LoadNewDate) {
       //! LoadNewDate
       // THIS EVENT SETS THE STATE OF THE APP TO THE CURRENT DATE
       // INITIALIZEING THE INTAKE VALUES IN 0
       // AND UPDATES THE USERS HISTORY
 
-      yield DailyCounterLoading();
+      yield LoadingState();
 
       List<ChartValue> carbsHistory;
       List<ChartValue> waterHistory;
@@ -158,13 +158,13 @@ class DailyCounterBloc
         waterIntakeLastWeek: waterHistory,
         carbsIntakeLastWeek: carbsHistory,
       );
-      yield DailyCounterLoaded(day);
+      yield LoadedState(day);
     } else if (event is AddWater) {
       //! AddWater
       // THIS EVENT RECIVES THE OLD VALUES AND THE AMMOUNT OF WATER THE USER ADDED
       // AS THE VALUE CAN BE NEGATIVE, BUT THE TOTAL CANT, THERE IS A CHECK
       // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY IT ASIGNES 0
-      yield DailyCounterLoading();
+      yield LoadingState();
       if (event.values.waterIntake + event.ammount.toInt() >= 0) {
         final DayValues day = DayValues(
           dailyWaterTarget: event.values.dailyWaterTarget,
@@ -174,7 +174,7 @@ class DailyCounterBloc
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(day);
+        yield new LoadedState(day);
       } else {
         // SET DAY VALUES WITH 0 WATER
         final DayValues day = DayValues(
@@ -185,14 +185,14 @@ class DailyCounterBloc
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(day);
+        yield new LoadedState(day);
       }
     } else if (event is AddCarbs) {
       //! AddCarbs
       // THIS EVENT RECIVES THE OLD VALUES AND THE AMMOUNT OF CARBS THE USER ADDED
       // AS THE VALUE CAN BE NEGATIVE, BUT THE IOTAL CANT, THERE IS A CHECK
       // THAT IF THE USER SUBTRACTS MORE WATER THAT THERE IS CURRENTLY
-      yield DailyCounterLoading();
+      yield LoadingState();
 
       if (event.values.carbsIntake + event.ammount.toInt() >= 0) {
         final DayValues day = DayValues(
@@ -203,7 +203,7 @@ class DailyCounterBloc
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(day);
+        yield new LoadedState(day);
       } else {
         // SET DAY VALUES WITH 0 CARBS
         final DayValues day = DayValues(
@@ -214,7 +214,7 @@ class DailyCounterBloc
           carbsIntakeLastWeek: event.values.carbsIntakeLastWeek,
           waterIntakeLastWeek: event.values.waterIntakeLastWeek,
         );
-        yield new DailyCounterLoaded(day);
+        yield new LoadedState(day);
       }
     }
   }

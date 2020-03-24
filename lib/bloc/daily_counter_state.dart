@@ -8,12 +8,12 @@ abstract class DailyCounterState extends Equatable {
   DailyCounterState([List props = const []]) : super(props);
 }
 
-class DailyCounterInitial extends DailyCounterState {}
+class InitialState extends DailyCounterState {}
 
-class DailyCounterLoading extends DailyCounterState {}
+class LoadingState extends DailyCounterState {}
 
-class DailyCounterLoaded extends DailyCounterState {
+class LoadedState extends DailyCounterState {
   final DayValues values;
 
-  DailyCounterLoaded(this.values) : super([values]);
+  LoadedState(this.values) : super([values]);
 }

@@ -23,6 +23,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
+      debugShowMaterialGrid: false,
+      showSemanticsDebugger: false,
     );
   }
 }
@@ -39,11 +42,11 @@ class MyHomePage extends StatelessWidget {
         child: Container(
           child: BlocBuilder<DailyCounterBloc, DailyCounterState>(
             builder: (BuildContext context, DailyCounterState state) {
-              if (state is DailyCounterInitial) {
+              if (state is InitialState) {
                 return initialLandingPage(context);
-              } else if (state is DailyCounterLoading) {
+              } else if (state is LoadingState) {
                 return buildLoading();
-              } else if (state is DailyCounterLoaded) {
+              } else if (state is LoadedState) {
                 var formatter = new DateFormat('E dd LLL');
                 if (state.values.day !=
                     formatter.format(DateTime.now()).toString()) {
